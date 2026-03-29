@@ -26,9 +26,7 @@
   .b-fnb .bl{color:#3b6d11} .b-fnb .bv{color:#3b6d11}
   .b-decor .bl{color:#534ab7} .b-decor .bv{color:#534ab7}
   .b-svc .bl{color:#666} .b-svc .bv{color:#1a1a1a}
-  .header-meta{font-size:11px;color:#888;margin-top:6px}
-  .header-meta b{font-weight:500;color:#1a1a1a}
-  .section{padding:14px 16px;border-bottom:1px solid #e5e4e0;background:#fff;margin-bottom:8px;border-radius:0}
+  .section{padding:14px 16px;border-bottom:1px solid #e5e4e0;background:#fff;margin-bottom:8px}
   .section:first-of-type{margin-top:8px}
   .section-title{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px}
   .card{background:#f7f6f2;border-radius:10px;padding:12px 14px;margin-bottom:8px}
@@ -244,7 +242,7 @@
   <div class="card">
     <div class="card-head">
       <span style="font-size:13px;font-weight:600">Delhi transfers (pickup + drop)</span>
-      <span class="pill pill-shared">shared</span>
+      <span class="pill pill-groom">groom side</span>
       <span style="flex:1"></span>
       <span class="val-badge" id="transfer-disp">₹0.5L</span>
     </div>
@@ -334,26 +332,30 @@ function calc(){
   document.getElementById('sr-brides').textContent=b.rooms;
   document.getElementById('sr-total').textContent=g.rooms+b.rooms;
   document.getElementById('sr-cost').textContent=fmtL(Math.round(roomCost*100)/100);
+
   var fnb=getFnb('m')+getFnb('s')+getFnb('h')+getFnb('sh');
   var decor=getLakh('decor');
-  var svc=getLakh('venue')+getLakh('photo')+getLakh('dj')+getLakh('priest')+getLakh('transfer')+getLakh('misc');
-  var mumbai=getLakh('mumbai');
+  var svc=getLakh('venue')+getLakh('photo')+getLakh('dj')+getLakh('priest')+getLakh('misc');
+  var gromOnly=getLakh('mumbai')+getLakh('transfer');
   var sharedTotal=fnb+decor+svc;
-  var total=gRoomCost+bRoomCost+sharedTotal+mumbai;
+  var total=gRoomCost+bRoomCost+sharedTotal+gromOnly;
+
   var budget=30;
   function pct(v){return Math.min((v/budget)*100,100)+'%';}
-  document.getElementById('bar-groom').style.width=pct(gRoomCost+mumbai);
+  document.getElementById('bar-groom').style.width=pct(gRoomCost+gromOnly);
   document.getElementById('bar-bride').style.width=pct(bRoomCost);
   document.getElementById('bar-fnb').style.width=pct(fnb);
   document.getElementById('bar-decor').style.width=pct(decor);
   document.getElementById('bar-svc').style.width=pct(svc);
+
   document.getElementById('b-spent').textContent=fmtL(Math.round(total*100)/100);
-  document.getElementById('bkt-groom').textContent=fmtL(Math.round((gRoomCost+mumbai)*100)/100);
+  document.getElementById('bkt-groom').textContent=fmtL(Math.round((gRoomCost+gromOnly)*100)/100);
   document.getElementById('bkt-bride').textContent=fmtL(Math.round(bRoomCost*100)/100);
   document.getElementById('bkt-fnb').textContent=fmtL(Math.round(fnb*100)/100);
   document.getElementById('bkt-decor').textContent=fmtL(Math.round(decor*100)/100);
   document.getElementById('bkt-svc').textContent=fmtL(Math.round(svc*100)/100);
-  var groomTotal=gRoomCost+mumbai+(sharedTotal/2);
+
+  var groomTotal=gRoomCost+gromOnly+(sharedTotal/2);
   var brideTotal=bRoomCost+(sharedTotal/2);
   document.getElementById('side-groom').textContent=fmtL(Math.round(groomTotal*100)/100);
   document.getElementById('side-bride').textContent=fmtL(Math.round(brideTotal*100)/100);
